@@ -2,47 +2,41 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class StudentService {
-    private final Map<Long, Student> students = new HashMap<>();
-    private Long idCounter = 1L;
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(idCounter++);
-        students.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
 
-    public Optional<Student> getStudent(Long id) {
-        return Optional.ofNullable(students.get(id));
-    }
-
-    public Collection<Student> getAllStudents() {
-        return students.values();
+    public Student getStudent(Long id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student updateStudent(Long id, Student student) {
-        if (students.containsKey(id)) {
-            student.setId(id);
-            students.put(id, student);
-            return student;
-        }
-        return null;
+        student.setId(id);
+        return studentRepository.save(student);
     }
 
     public Student deleteStudent(Long id) {
-        return students.remove(id);
+        studentRepository.deleteById(id);
+        return null;
     }
 
-    public Collection<Student> findStudentsByAge(int age) {
-        return students.values().stream()
-                .filter(student -> student.getAge() == age)
-                .toList();
+    public Collection<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public Collection<Student> findStudentsByAge(Long age) {
+        return studentRepository.findByAge(age);
     }
 }

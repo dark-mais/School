@@ -24,7 +24,7 @@ public class StudentController {
 
     @GetMapping("{id}")
     public Optional<Student> getStudent(@PathVariable Long id) {
-        return studentService.getStudent(id);
+        return Optional.ofNullable(studentService.getStudent(id));
     }
 
     @GetMapping
@@ -43,7 +43,7 @@ public class StudentController {
     }
 
     @GetMapping("/age/{age}")
-    public Collection<Student> findStudentsByAge(@PathVariable int age) {
+    public Collection<Student> findStudentsByAge(@PathVariable Long age) {
         return studentService.findStudentsByAge(age);
     }
 }

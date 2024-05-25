@@ -24,7 +24,7 @@ public class FacultyController {
 
     @GetMapping("{id}")
     public Optional<Faculty> getFaculty(@PathVariable Long id) {
-        return facultyService.getFaculty(id);
+        return Optional.ofNullable(facultyService.getFaculty(id));
     }
 
     @GetMapping
@@ -44,6 +44,6 @@ public class FacultyController {
 
     @GetMapping("/color/{color}")
     public Collection<Faculty> findFacultiesByColor(@PathVariable String color) {
-        return facultyService.findFacultiesByColor(color);
+        return facultyService.findByColor(color);
     }
 }
