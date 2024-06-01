@@ -14,8 +14,11 @@ import java.util.stream.Collectors;
 @RequestMapping("faculty")
 public class FacultyController {
 
-    @Autowired
-    private FacultyService facultyService;
+    private final FacultyService facultyService;
+
+    public FacultyController(FacultyService facultyService) {
+        this.facultyService = facultyService;
+    }
 
     @PostMapping
     public Faculty createFaculty(@RequestBody Faculty faculty) {
@@ -23,13 +26,8 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public Optional<Faculty> getFaculty(@PathVariable Long id) {
-        return Optional.ofNullable(facultyService.getFaculty(id));
-    }
-
-    @GetMapping
-    public Collection<Faculty> getAllFaculties() {
-        return facultyService.getAllFaculties();
+    public Faculty getFaculty(@PathVariable Long id) {
+        return facultyService.getFaculty(id);
     }
 
     @PutMapping("{id}")
@@ -42,8 +40,15 @@ public class FacultyController {
         return facultyService.deleteFaculty(id);
     }
 
-    @GetMapping("/color/{color}")
-    public Collection<Faculty> findFacultiesByColor(@PathVariable String color) {
-        return facultyService.findByColor(color);
+    @GetMapping
+    public Collection<Faculty> getAllFaculties() {
+        return facultyService.getAllFaculties();
+    }
+
+    @GetMapping("color/{color}")
+    public Collection<Faculty> getFacultiesByColor(@PathVariable String color) {
+        return facultyService.getAllFaculties().stream()
+                .filter(faculty -> faculty.getColor().equalsIgnoreCase(color))
+                .collect(Collectors.toList());
     }
 }

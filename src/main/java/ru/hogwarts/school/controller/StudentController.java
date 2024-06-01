@@ -1,21 +1,22 @@
 package ru.hogwarts.school.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
 public class StudentController {
 
-    @Autowired
-    private StudentService studentService;
+    private final StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
@@ -23,13 +24,8 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public Optional<Student> getStudent(@PathVariable Long id) {
-        return Optional.ofNullable(studentService.getStudent(id));
-    }
-
-    @GetMapping
-    public Collection<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    public Student getStudent(@PathVariable Long id) {
+        return studentService.getStudent(id);
     }
 
     @PutMapping("{id}")
@@ -42,8 +38,15 @@ public class StudentController {
         return studentService.deleteStudent(id);
     }
 
-    @GetMapping("/age/{age}")
-    public Collection<Student> findStudentsByAge(@PathVariable Long age) {
-        return studentService.findStudentsByAge(age);
+    @GetMapping
+    public Collection<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("age/{age}")
+    public Collection<Student> getStudentsByAge(@PathVariable int age) {
+        return studentService.getAllStudents().stream()
+                .filter(student -> student.getAge() == age)
+                .collect(Collectors.toList());
     }
 }
