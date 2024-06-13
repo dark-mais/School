@@ -17,6 +17,8 @@ public class Student {
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     private Avatar avatar;
 
+    public Student() {}
+
     public Student(Long id, String name, int age) {
         this.id = id;
         this.name = name;

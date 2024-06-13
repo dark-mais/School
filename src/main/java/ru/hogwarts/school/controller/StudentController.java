@@ -9,7 +9,6 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
@@ -58,4 +57,6 @@ public class StudentController {
         Student student = studentService.getStudent(id);
         return student != null ? student.getFaculty() : null;
     }
+
+
 }
