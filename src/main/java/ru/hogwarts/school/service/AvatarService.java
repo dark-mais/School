@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,5 +45,9 @@ public class AvatarService {
     public byte[] getAvatarFromFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         return Files.readAllBytes(path);
+    }
+
+    public Page<Avatar> getAvatars(Pageable pageable) {
+        return avatarRepository.findAll(pageable);
     }
 }
