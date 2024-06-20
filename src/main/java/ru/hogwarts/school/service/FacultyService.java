@@ -20,6 +20,13 @@ public class FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max((name1, name2) -> Integer.compare(name1.length(), name2.length()))
+                .orElse("");
+    }
+
     public Faculty createFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
