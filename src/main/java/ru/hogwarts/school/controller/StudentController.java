@@ -18,6 +18,16 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @GetMapping("/print-parallel")
+    public void printStudentsInParallel() {
+        studentService.printStudentsInParallel();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        studentService.printStudentsSynchronized();
+    }
+
     @GetMapping("/names-starting-with-a")
     public List<String> getNamesStartingWithA() {
         return studentService.getNamesStartingWithA();

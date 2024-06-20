@@ -9,6 +9,8 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,5 +79,59 @@ public class StudentService {
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0);
+    }
+
+    public void printStudentsInParallel() {
+        List<Student> students = studentRepository.findAll();
+        if (students.size() < 6) {
+            logger.warn("Not enough students to print.");
+            return;
+        }
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+
+        executorService.submit(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+
+        executorService.shutdown();
+    }
+
+    public synchronized void printStudentName(String name) {
+        System.out.println(name);
+    }
+
+    public void printStudentsSynchronized() {
+        List<Student> students = studentRepository.findAll();
+        if (students.size() < 6) {
+            logger.warn("Not enough students to print.");
+            return;
+        }
+
+        printStudentName(students.get(0).getName());
+        printStudentName(students.get(1).getName());
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(() -> {
+            printStudentName(students.get(2).getName());
+            printStudentName(students.get(3).getName());
+        });
+
+        executorService.submit(() -> {
+            printStudentName(students.get(4).getName());
+            printStudentName(students.get(5).getName());
+        });
+
+        executorService.shutdown();
     }
 }
