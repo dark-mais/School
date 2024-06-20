@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
@@ -9,6 +11,7 @@ import java.util.Collection;
 
 @Service
 public class StudentService {
+    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
     private StudentRepository studentRepository;
@@ -45,5 +48,20 @@ public class StudentService {
 
     public Collection<Student> getStudentsByAgeRange(Long min, Long max) {
         return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public long getTotalStudents() {
+        logger.info("Called method: getTotalStudents");
+        return studentRepository.countAllStudents();
+    }
+
+    public double getAverageAge() {
+        logger.info("Called method: getAverageAge");
+        return studentRepository.findAverageAge();
+    }
+
+    public Collection<Student> getLastFiveStudents() {
+        logger.info("Called method: getLastFiveStudents");
+        return studentRepository.findLastFiveStudents();
     }
 }

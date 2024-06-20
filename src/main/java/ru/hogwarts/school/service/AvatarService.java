@@ -1,8 +1,12 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.repository.AvatarRepository;
 
@@ -14,6 +18,8 @@ import java.nio.file.Paths;
 
 @Service
 public class AvatarService {
+    private static final Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Autowired
     private AvatarRepository avatarRepository;
 
@@ -43,5 +49,10 @@ public class AvatarService {
     public byte[] getAvatarFromFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         return Files.readAllBytes(path);
+    }
+
+    public Page<Avatar> getAvatars(Pageable pageable) {
+        logger.info("Called method: getAvatars");
+        return avatarRepository.findAll(pageable);
     }
 }
