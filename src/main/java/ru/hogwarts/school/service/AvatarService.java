@@ -28,6 +28,7 @@ public class AvatarService {
     }
 
     public Avatar saveAvatar(MultipartFile file, Long studentId) throws IOException {
+        logger.info("Called method: saveAvatar");
         String filePath = "avatars/" + studentId + "_" + file.getOriginalFilename();
         File avatarFile = new File(filePath);
         file.transferTo(avatarFile);
@@ -43,10 +44,12 @@ public class AvatarService {
     }
 
     public Avatar getAvatar(Long id) {
+        logger.info("Called method: getAvatar");
         return avatarRepository.findById(id).orElse(null);
     }
 
     public byte[] getAvatarFromFile(String filePath) throws IOException {
+        logger.info("Called method: getAvatarFromFile");
         Path path = Paths.get(filePath);
         return Files.readAllBytes(path);
     }

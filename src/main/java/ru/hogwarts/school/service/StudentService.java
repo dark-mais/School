@@ -21,32 +21,39 @@ public class StudentService {
     }
 
     public Student createStudent(Student student) {
+        logger.info("Called method: createStudent");
         return studentRepository.save(student);
     }
 
     public Student getStudent(Long id) {
+        logger.info("Called method: getStudent");
         return studentRepository.findById(id).orElse(null);
     }
 
     public Student updateStudent(Long id, Student student) {
+        logger.info("Called method: updateStudent");
         student.setId(id);
         return studentRepository.save(student);
     }
 
     public Student deleteStudent(Long id) {
+        logger.info("Called method: deleteStudent");
         studentRepository.deleteById(id);
         return null;
     }
 
     public Collection<Student> getAllStudents() {
+        logger.info("Called method: getAllStudents");
         return studentRepository.findAll();
     }
 
     public Collection<Student> findStudentsByAge(Long age) {
+        logger.info("Called method: findStudentsByAge");
         return studentRepository.findByAge(age);
     }
 
     public Collection<Student> getStudentsByAgeRange(Long min, Long max) {
+        logger.info("Called method: getStudentsByAgeRange");
         return studentRepository.findByAgeBetween(min, max);
     }
 
